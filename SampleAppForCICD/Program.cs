@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SampleAppForCICD.Data;
+
 namespace SampleAppForCICD
 {
     public class Program
@@ -8,6 +11,10 @@ namespace SampleAppForCICD
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add DbContext service
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
@@ -28,7 +35,8 @@ namespace SampleAppForCICD
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Employees}/{action=Index}/{id?}");
+
 
             app.Run();
         }
